@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(uuid())
+  createdAt    DateTime      @default(now())
+  username     String
+  email        String        @unique
+  password     String
+  homes        Home[]
+  reservations Reservation[]
+  favourites    Favourite[]
+}
+
+model Home {
+  id           String        @id @default(uuid())
+  createdAt    DateTime      @default(now())
+  title        String
+  description  String
+  guests       Int
+  bedrooms     Int
+  beds         Int
+  bathrooms    Int
+  category     String
+  lat          String
+  long         String
+  start_date   String
+  end_date     String
+  price        Float
+  image        String
+  belongToId   String
+  belongTo     User          @relation(fields: [belongToId], references: [id], onDelete: Cascade)
+  reservations Reservation[]
+  favourites    Favourite[]
+
+  @@unique([id, belongToId])
+}
+
+model Reservation {
+  id             String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  guests         Int
+  check_in       String
+  check_out      String
+  total          Float
+  belongToId     String
+  belongTo       User     @relation(fields: [belongToId], references: [id], onDelete: Cascade)
+  belongToHomeId String
+  belongToHome   Home     @relation(fields: [belongToHomeId], references: [id], onDelete: Cascade)
+
+  @@unique([id, belongToId])
+  @@unique([id, belongToHomeId])
+}
+
+model Favourite {
+  id             String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  belongToId     String
+  belongTo       User     @relation(fields: [belongToId], references: [id], onDelete: Cascade)
+  belongToHomeId String
+  belongToHome   Home     @relation(fields: [belongToHomeId], references: [id], onDelete: Cascade)
+
+  @@unique([id, belongToId])
+  @@unique([id, belongToHomeId])
+}
