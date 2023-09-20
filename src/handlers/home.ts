@@ -18,13 +18,7 @@ export const getAllHome = async(req,res)=>{
             skip,
             take: +pageSize
         })
-        if (home.length === 0) {
-            // No data found
-            res.status(404);
-            res.json({ error: 'No data found' });
-          } else {
-            res.status(200).json({ data: home });
-          }
+        res.status(200).json({ data: home });
     } catch (error) {
         console.log(error)
         res.status(500)
