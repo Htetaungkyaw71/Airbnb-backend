@@ -21,8 +21,8 @@ body("category").isString(),
 body("lat").isString(),
 body("long").isString(),
 body("start_date").isString(),
-body("end_date").isString()
-,createHome);
+body("end_date").isString(),
+createHome);
 
 router.put("/home/:id",body("title").isString(),
 body("description").isString(),

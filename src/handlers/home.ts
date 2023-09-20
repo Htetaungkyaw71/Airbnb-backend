@@ -13,12 +13,14 @@ export const getAllHome = async(req,res)=>{
             return;
           }
         const skip = (page - 1) * pageSize;
+
+        const totalCount = await prisma.home.count()
    
         const home = await prisma.home.findMany({
             skip,
             take: +pageSize
         })
-        res.status(200).json({ data: home });
+        res.status(200).json({ data: home, totalCount });
     } catch (error) {
         console.log(error)
         res.status(500)
