@@ -29,6 +29,25 @@ export const getAllHome = async(req,res)=>{
     }
 }
 
+export const getAllHomeWithCategory = async(req,res)=>{
+    try {
+        const category = req.params.category;
+   
+        const home = await prisma.home.findMany({
+            where:{
+                category
+            }
+        })
+        res.status(200).json({ data: home });
+    } catch (error) {
+        console.log(error)
+        res.status(500)
+        res.json({"error":"Server Error"})
+        return
+    }
+}
+
+
 export const getHomeDetail = async(req,res)=>{
     try {
         const home = await prisma.home.findUnique({
@@ -39,6 +58,7 @@ export const getHomeDetail = async(req,res)=>{
         res.status(200)
         res.json({data:home})
     } catch (error) {
+        console.log(error)
         res.status(500)
         res.json({"error":"Server Error"})
         return

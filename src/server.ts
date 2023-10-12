@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 import { protect } from "./modules/auth";
 import { createNewUser, signin } from "./handlers/users";
 import cors from "cors"
-import { getAllHome, getHomeDetail } from "./handlers/home";
+import { getAllHome, getAllHomeWithCategory, getHomeDetail } from "./handlers/home";
 import bodyParser from "body-parser"
 
 
@@ -22,9 +22,10 @@ app.use(express.urlencoded({extended:true}))
 app.post("/user", createNewUser);
 app.post("/signin", signin);
 
-app.get("/api/home/:page/:pageSize", getAllHome);
 
-app.get("/api/home/:id", getHomeDetail);
+app.get("/api/home/:page/:pageSize", getAllHome);
+app.get("/api/home/:category",getAllHomeWithCategory)
+app.get("/api/home/property/detail/:id", getHomeDetail);
 
 app.use((err,req,res,next)=>{
   if(err.type === 'auth'){
